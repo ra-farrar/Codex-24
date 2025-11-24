@@ -855,7 +855,9 @@ html[data-theme="dark"] #animation .animation-stage{
 .header-text{font-family:"Angkor",var(--font-sans);font-weight:400;display:inline-flex;flex-direction:column;align-items:stretch;letter-spacing:-.06em;user-select:text;line-height:1;font-size:20vw;gap:0.05em;width:100%}
 .header-text__word{display:block;width:100%;text-align:center}
 @media (min-width: 768px){.header-text{flex-direction:row;align-items:baseline;gap:0.12em;width:auto}.header-text__word{display:inline-block;width:auto;text-align:initial}}
-#header.section{outline:none!important}
+html:not([data-debug="1"]) #header.section {
+  outline: none !important;
+}
 #header .header-fill{position:relative}
 
 /* ======== CUSTOM TEXT SELECTION ======== */
