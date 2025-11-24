@@ -12,6 +12,8 @@
   --border: #e6e7eb;
   --accent: #0f62fe;
   --accent-contrast: #ffffff;
+  --resume-accent: #ff819d;
+  --resume-contrast: #ffffff;
   --subhead-arrow: #1600ff;
 
   /* Typographic scale */
@@ -455,6 +457,9 @@ body[data-viewport="mobile"] #apps {
   height: min(92vh, 900px);
   max-height: 100vh;
   overflow: hidden;
+  background: linear-gradient(90deg, var(--resume-accent) 0%, var(--resume-accent) 35%, transparent 35%);
+  border-radius: var(--section-radius, 24px);
+  border: var(--section-border, 1px solid var(--border));
 }
 
 .master-grid {
@@ -462,6 +467,8 @@ body[data-viewport="mobile"] #apps {
   grid-template-columns: 1fr 2fr;
   gap: 24px;
   height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .master-column {
@@ -473,6 +480,27 @@ body[data-viewport="mobile"] #apps {
   background: var(--bg);
   border: 1px solid var(--border);
   overflow: hidden;
+}
+
+.master-column--resume {
+  position: relative;
+  background: transparent;
+  border-color: transparent;
+  color: var(--resume-contrast);
+}
+
+.master-column--resume::before {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  background: var(--resume-accent);
+  border-radius: 20px;
+  z-index: -1;
+}
+
+.master-column--resume .master-label,
+.master-column--resume .master-placeholder {
+  color: var(--resume-contrast);
 }
 
 .master-label {
