@@ -75,6 +75,74 @@ p,h1,h2,h3,h4,h5,h6{margin:0}
 
 /* ========== Layout ========== */
 .page{width:min(100%,var(--page-max));margin:0 auto;padding:24px var(--page-padding-inline) 64px}
+
+.master-container {
+  width: 100%;
+}
+
+.master-scroll {
+  width: 100%;
+}
+
+.master-grid {
+  display: block;
+  width: 100%;
+}
+
+.master-column {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vw, 16px);
+}
+
+@media (min-width: var(--bp-tablet)) {
+  .page {
+    padding: 24px var(--page-padding-inline);
+    min-height: 100vh;
+  }
+
+  .master-container {
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    background: color-mix(in oklab, var(--elev) 90%, transparent);
+    height: calc(100vh - 48px);
+    max-height: 1100px;
+    overflow: hidden;
+  }
+
+  .master-scroll {
+    height: 100%;
+    overflow-y: auto;
+    padding: clamp(16px, 2.8vw, 28px);
+  }
+
+  .master-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: clamp(18px, 3vw, 36px);
+    height: 100%;
+  }
+
+  .master-column--resume {
+    padding-right: clamp(12px, 2vw, 20px);
+    border-right: 1px solid var(--border);
+  }
+
+  .master-column--content {
+    padding-left: clamp(12px, 2vw, 20px);
+  }
+
+  .master-container .section {
+    margin-block: clamp(8px, 1vw, 14px);
+  }
+
+  .master-container .full-bleed {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: var(--section-radius, 0px);
+  }
+}
 .section{background:var(--section-bg,transparent);color:var(--section-fg,var(--fg));border-radius:var(--section-radius,0px);padding:clamp(16px,3vw,28px);margin-block:clamp(10px,2vw,20px);border:var(--section-border,1px solid transparent)}
 
 /* In dark mode keep surface containers transparent so the background is continuous */
