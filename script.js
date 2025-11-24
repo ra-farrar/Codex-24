@@ -35,46 +35,6 @@
   }, { passive: true });
 })();
 
-// ========== Viewport Mode Detection ==========
-const VIEWPORT_BREAKPOINTS = {
-  tablet: 768,
-  desktop: 1024,
-  largeDesktop: 1440
-};
-
-let currentViewportMode = '';
-
-function resolveViewportMode(width) {
-  if (width >= VIEWPORT_BREAKPOINTS.largeDesktop) return 'large-desktop';
-  if (width >= VIEWPORT_BREAKPOINTS.desktop) return 'desktop';
-  if (width >= VIEWPORT_BREAKPOINTS.tablet) return 'tablet';
-  return 'mobile';
-}
-
-function applyViewportMode(mode) {
-  if (!mode || mode === currentViewportMode) return;
-  currentViewportMode = mode;
-  if (document.body) {
-    document.body.setAttribute('data-viewport', mode);
-  }
-  document.dispatchEvent(new CustomEvent('viewportchange', { detail: { viewport: mode } }));
-}
-
-function refreshViewportMode() {
-  if (!document.body) return;
-  const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  applyViewportMode(resolveViewportMode(width));
-}
-
-window.addEventListener('resize', refreshViewportMode, { passive: true });
-window.addEventListener('orientationchange', refreshViewportMode, { passive: true });
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', refreshViewportMode, { once: true });
-}
-
-refreshViewportMode();
-
 // ========== Timeline date width sync ==========
 (function () {
   const TIMELINE_SELECTOR = '.section--timeline';
@@ -103,7 +63,6 @@ refreshViewportMode();
   function initTimelineWidthSync() {
     scheduleMeasurement();
     window.addEventListener('resize', scheduleMeasurement, { passive: true });
-    document.addEventListener('viewportchange', scheduleMeasurement, { passive: true });
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(scheduleMeasurement).catch(() => {});
     }
@@ -167,319 +126,6 @@ if (toggle) {
   applyTheme(getCurrentTheme());
 }
 
-// ========== Placeholder Mounts ==========
-function mountAnimationDemo() {
-  const container = document.getElementById('animationContainer');
-  if (!container || typeof Matter === 'undefined') return;
-
-  const { Engine, Render, Runner, Bodies, Composite, Mouse, MouseConstraint, Events, Body } = Matter;
-
-  container.innerHTML = '';
-
-  let width = container.clientWidth || container.offsetWidth || 640;
-  let height = container.clientHeight || container.offsetHeight || 400;
-
-  const engine = Engine.create();
-  const world = engine.world;
-  world.gravity.y = 0.5;
-
-  function getStrokeColor() {
-    const value = getComputedStyle(container).getPropertyValue('--shape-stroke') || '';
-    const trimmed = value.trim();
-    return trimmed || '#000';
-  }
-
-  function updateDebugInfo() {
-    const ratio = window.devicePixelRatio || 1;
-    const bodies = Composite.allBodies(world).length;
-    const debugLabel = [
-      `stage: ${Math.round(width)} × ${Math.round(height)} px`,
-      `pixelRatio: ${ratio.toFixed(2)}`,
-      `bodies: ${bodies}`
-    ].join('\n');
-    container.setAttribute('data-debug-info', debugLabel);
-  }
-
-  const render = Render.create({
-    element: container,
-    engine,
-    options: {
-      width,
-      height,
-      wireframes: false,
-      background: 'transparent',
-      pixelRatio: window.devicePixelRatio || 1
-    }
-  });
-
-  Render.run(render);
-  const runner = Runner.create();
-  Runner.run(runner, engine);
-
-  const overlay = document.createElement('div');
-  overlay.className = 'animation-overlay';
-  overlay.setAttribute('aria-hidden', 'true');
-  container.appendChild(overlay);
-
-  const wallOptions = { isStatic: true, render: { fillStyle: 'transparent' } };
-  let ground;
-  let ceiling;
-  let leftWall;
-  let rightWall;
-
-  function addBounds() {
-    ground = Bodies.rectangle(width / 2, height + 25, width, 50, wallOptions);
-    ceiling = Bodies.rectangle(width / 2, -25, width, 50, wallOptions);
-    leftWall = Bodies.rectangle(-25, height / 2, 50, height, wallOptions);
-    rightWall = Bodies.rectangle(width + 25, height / 2, 50, height, wallOptions);
-    Composite.add(world, [ground, ceiling, leftWall, rightWall]);
-    updateDebugInfo();
-  }
-
-  addBounds();
-
-  const shapeData = [
-    { text: 'PAID SOCIAL' },
-    { text: 'PAID DISPLAY' },
-    { text: 'OPTIMIZATION' },
-    { text: 'STRATEGY' },
-    { text: 'B2B & B2C' },
-    { text: 'GO-TO-MARKET' }
-  ];
-
-  const imageData = [
-    {
-      src: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNTAiIGZpbGw9IiMwMDAwRkYiLz48cGF0aCBkPSJNMjAgNzVMMjAgMjVNMjAgNzVMODAgNzVNMzUgNjBMMzUgNDBNNTAgNjBMNTAgMzBNNjUgNjBMNjUgNDUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMzUiIGN5PSI0MCIgcj0iNCIgZmlsbD0id2hpdGUiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjMwIiByPSI0IiBmaWxsPSJ3aGl0ZSIvPjxjaXJjbGUgY3g9IjY1IiBjeT0iNDUiIHI9IjQiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTM1IDQwTDUwIDMwTTUwIDMwTDY1IDQ1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI1NSIgY3k9IjQ1IiByPSIxMiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTYzIDM4TDcyIDI5TTcyIDI5TDc1IDMyTTcyIDI5TDY5IDI2IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==',
-      width: 60,
-      height: 60
-    },
-    {
-      src: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNTAiIGZpbGw9IiMwMDAwRkYiLz48cGF0aCBkPSJNNTAgMjVWMzBNMzAgMzBMMzQgMzRNNzAgMzBMNjYgMzRNMjUgNTBIMzBNNzAgNTBINzUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTQwIDQ1QzQwIDM5LjQ3NzIgNDQuNDc3MiAzNSA1MCAzNUM1NS41MjI4IDM1IDYwIDM5LjQ3NzIgNjAgNDVDNjAgNDguNSA1OCA1Mi41IDU1IDU1SDQ1QzQyIDUyLjUgNDAgNDguNSA0MCA0NVoiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik00NSA1NUg1NU00MyA2MEg1N000NSA2NUg1NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNNDcgNDJMNTMgNDgiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=',
-      width: 60,
-      height: 60
-    },
-    {
-      src: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNTAiIGZpbGw9IiMwMDAwRkYiLz48cGF0aCBkPSJNNTAgMjBDNDUgMjUgNDAgMzUgNDAgNDVDNDAgNTUgNDUgNjAgNTAgNjVDNTUgNjAgNjAgNTUgNjAgNDVDNjAgMzUgNTUgMjUgNTAgMjBaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjM1IiByPSI1IiBmaWxsPSJ3aGl0ZSIvPjxwYXRoIGQ9Ik40MCA0NUwzNSA1NUwzOCA1NVoiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik02MCA0NUw2NSA1NUw2MiA1NVoiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik00NSA2NUw0MCA3MEM0MCA3NSA0NSA3OCA1MCA3OEM1NSA3OCA2MCA3NSA2MCA3MEw1NSA2NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTQ1IDY1SDU1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zNSA3MEMzMiA3MiAzMCA3NSAzMiA3N0MzNCA3OSAzNyA3NyA0MCA3NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNNjUgNzBDNjggNzIgNzAgNzUgNjggNzdDNjYgNzkgNjMgNzcgNjAgNzUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTQ1IDcyTDQ3IDc1TTUwIDcyTDUwIDc2TTU1IDcyTDUzIDc1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==',
-      width: 60,
-      height: 60
-    }
-  ];
-
-  const shapes = [];
-  const labels = [];
-  const images = [];
-
-  function getTextWidth(text) {
-    return text.length * 10 + 40;
-  }
-
-  const spawnBand = Math.min(height * 0.35, 180);
-  const spawnOffset = 80;
-
-  shapeData.forEach((data, i) => {
-    const x = Math.random() * (width - 200) + 100;
-    const y = Math.random() * spawnBand + spawnOffset;
-    const w = getTextWidth(data.text);
-    const h = 50;
-    const cornerRadius = [0, 5, 10, 15, 20, 25][Math.floor(Math.random() * 6)];
-
-    const shape = Bodies.rectangle(x, y, w, h, {
-      chamfer: { radius: cornerRadius },
-      restitution: 0.9,
-      friction: 0.1,
-      density: 0.001,
-      render: {
-        fillStyle: 'transparent',
-        strokeStyle: getStrokeColor(),
-        lineWidth: 2
-      }
-    });
-
-    const label = document.createElement('div');
-    label.className = 'shape-label';
-    label.textContent = data.text;
-    overlay.appendChild(label);
-    labels.push(label);
-
-    shapes.push(shape);
-    Composite.add(world, shape);
-  });
-
-  imageData.forEach((data, i) => {
-    const x = Math.random() * (width - 200) + 100;
-    const y = Math.random() * spawnBand + spawnOffset;
-
-    const shape = Bodies.rectangle(x, y, data.width, data.height, {
-      chamfer: { radius: data.height / 2 },
-      restitution: 0.9,
-      friction: 0.1,
-      density: 0.001,
-      render: { fillStyle: 'transparent', strokeStyle: 'transparent', lineWidth: 0 }
-    });
-
-    const img = document.createElement('img');
-    img.className = 'shape-image';
-    img.src = data.src;
-    img.alt = '';
-    img.width = data.width;
-    img.height = data.height;
-    img.style.width = data.width + 'px';
-    img.style.height = data.height + 'px';
-    overlay.appendChild(img);
-    images.push(img);
-
-    shapes.push(shape);
-    Composite.add(world, shape);
-  });
-
-  function updateShapeStrokes() {
-    const color = getStrokeColor();
-    shapes.forEach((shape) => {
-      if (shape.render && shape.render.lineWidth > 0) {
-        shape.render.strokeStyle = color;
-      }
-    });
-  }
-
-  updateShapeStrokes();
-  updateDebugInfo();
-
-  const mouse = Mouse.create(render.canvas);
-  const mouseConstraint = MouseConstraint.create(engine, {
-    mouse,
-    constraint: { stiffness: 0.2, render: { visible: false } }
-  });
-  Composite.add(world, mouseConstraint);
-  render.mouse = mouse;
-
-  Events.on(mouseConstraint, 'mousemove', (event) => {
-    const mousePos = event.mouse.position;
-    shapes.forEach((shape) => {
-      const dx = shape.position.x - mousePos.x;
-      const dy = shape.position.y - mousePos.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      if (distance < 150) {
-        const force = 0.008;
-        const randomForce = { x: (Math.random() - 0.5) * force, y: (Math.random() - 0.5) * force };
-        Body.applyForce(shape, shape.position, randomForce);
-        Body.setAngularVelocity(shape, shape.angularVelocity + (Math.random() - 0.5) * 0.3);
-      }
-    });
-  });
-
-  const updateOverlays = () => {
-    for (let i = 0; i < shapeData.length; i++) {
-      const label = labels[i];
-      const shape = shapes[i];
-      label.style.left = shape.position.x + 'px';
-      label.style.top = shape.position.y + 'px';
-      label.style.transform = `translate(-50%, -50%) rotate(${shape.angle}rad)`;
-    }
-    for (let i = 0; i < imageData.length; i++) {
-      const img = images[i];
-      const shape = shapes[shapeData.length + i];
-      img.style.left = shape.position.x + 'px';
-      img.style.top = shape.position.y + 'px';
-      img.style.transform = `translate(-50%, -50%) rotate(${shape.angle}rad)`;
-    }
-  };
-
-  Events.on(engine, 'afterUpdate', updateOverlays);
-  updateOverlays();
-  updateDebugInfo();
-
-  const handleThemeChange = () => {
-    updateShapeStrokes();
-  };
-  document.addEventListener('themechange', handleThemeChange);
-
-  const resizeHandler = () => {
-    width = container.clientWidth || container.offsetWidth || width;
-    height = container.clientHeight || container.offsetHeight || height;
-
-    render.bounds.max.x = width;
-    render.bounds.max.y = height;
-    render.options.width = width;
-    render.options.height = height;
-    render.canvas.width = width;
-    render.canvas.height = height;
-
-    [ground, ceiling, leftWall, rightWall].forEach((body) => {
-      if (body) Composite.remove(world, body);
-    });
-
-    addBounds();
-    updateDebugInfo();
-  };
-
-  window.addEventListener('resize', resizeHandler, { passive: true });
-
-  if (mouse.element) {
-    mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
-    mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
-  }
-}
-function mountExperienceDemo() {
-  const el = document.getElementById('experienceMount');
-  if (!el) return;
-  el.innerHTML = `
-    <div class="experience-stack">
-      <div class="custom-mount">
-        <div class="experience-entry">
-          <div class="experience-entry__company company">AMAZON</div>
-          <div class="experience-entry__title title">Senior Product Marketing Manager, US Prime Paid Media</div>
-          <div class="experience-entry__date date">2023 - Current</div>
-          <div class="experience-entry__title title">Product Marketing Manager, US Prime Paid Media</div>
-          <div class="experience-entry__date date">2023 - 2024</div>
-          <div class="experience-entry__summary">MORE ➤</div>
-          <div class="experience-entry__title title">Product Marketing Manager, Prime Access</div>
-          <div class="experience-entry__date date">2022 - 2023</div>
-          <div class="experience-entry__summary">MORE ➤</div>
-        </div>
-      </div>
-      <div class="custom-mount">
-        <div class="experience-entry">
-          <div class="experience-entry__company company">THE WALL STREET JOURNAL</div>
-          <div class="experience-entry__title title">
-            Product &amp; Brand<wbr> <span class="no-wrap">Marketing Manager</span>
-          </div>
-          <div class="experience-entry__date date">2020 - 2022</div>
-          <div class="experience-entry__summary">MORE ➤</div>
-          <div class="experience-entry__title title">Growth Marketing Manager</div>
-          <div class="experience-entry__date date">2019 - 2020</div>
-          <div class="experience-entry__summary">MORE ➤</div>
-        </div>
-      </div>
-      <div class="custom-mount">
-        <div class="experience-entry">
-          <div class="experience-entry__company company">THOMAS</div>
-          <div class="experience-entry__title title">
-            Team Lead,<wbr> <span class="no-wrap">Digital Marketing Strategy</span>
-          </div>
-          <div class="experience-entry__date date">2018 - 2019</div>
-          <div class="experience-entry__summary">MORE ➤</div>
-          <div class="experience-entry__title title">Digital Marketing Strategist</div>
-          <div class="experience-entry__date date">2016 - 2018</div>
-          <div class="experience-entry__summary">MORE ➤</div>
-          <div class="experience-entry__title title">Junior Digital Marketing Strategist</div>
-          <div class="experience-entry__date date">2015 - 2016</div>
-          <div class="experience-entry__summary">MORE ➤</div>
-        </div>
-      </div>
-      <div class="custom-mount">
-        <div class="experience-entry">
-          <div class="experience-entry__company company">EARLY CAREER</div>
-          <div class="experience-entry__title title">Editorial Content Analyst</div>
-          <div class="experience-entry__date date">Thomas | 2013 - 2015</div>
-          <div class="experience-entry__summary">MORE ➤</div>
-          <div class="experience-entry__title title">Copywriter</div>
-          <div class="experience-entry__date date">Trusty Tails Pet Care | 2013 - 2015</div>
-          <div class="experience-entry__summary">MORE ➤</div>
-        </div>
-      </div>
-    </div>
-  `;
-}
 
 // ========== Header text fitting (fills target width) ==========
 (function fitHeader() {
@@ -512,12 +158,10 @@ function mountExperienceDemo() {
     word.style.width = '100%';
   }
 
-  function fit() {
-    const maxW = targetWidth();
-    if (maxW <= 0) return;
+    function fit() {
+      const maxW = targetWidth();
+      if (maxW <= 0) return;
 
-    const viewport = document.body ? document.body.getAttribute('data-viewport') : '';
-    if (viewport === 'mobile') {
       textEl.style.whiteSpace = '';
       textEl.style.display = '';
       textEl.style.width = '';
@@ -530,29 +174,7 @@ function mountExperienceDemo() {
         word.style.width = '';
         fitWord(word, maxW);
       });
-    } else {
-      words.forEach(word => {
-        word.style.fontSize = '';
-        word.style.display = '';
-        word.style.whiteSpace = '';
-        word.style.width = '';
-      });
-
-      textEl.style.whiteSpace = 'nowrap';
-      textEl.style.display = 'inline-block';
-      textEl.style.width = 'auto';
-
-      textEl.style.fontSize = '50px';
-      let low = 6, high = 2400;
-      for (let i = 0; i < 22; i++) {
-        const mid = (low + high) / 2;
-        textEl.style.fontSize = mid + 'px';
-        const w = textEl.scrollWidth;
-        if (w > maxW) high = mid; else low = mid;
-      }
-      textEl.style.fontSize = (low - 0.5) + 'px';
     }
-  }
 
   if ('ResizeObserver' in window) {
     const ro = new ResizeObserver(fit);
@@ -561,11 +183,9 @@ function mountExperienceDemo() {
     window.addEventListener('resize', fit, { passive: true });
   }
 
-  document.addEventListener('viewportchange', fit, { passive: true });
-
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(fit);
-  } else {
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fit);
+    } else {
     setTimeout(fit, 0);
   }
 
@@ -627,12 +247,9 @@ function mountExperienceDemo() {
   fitAll();
 })();
 
-// ========== Mount demos on DOM ready ==========
-document.addEventListener('DOMContentLoaded', () => {
-  mountAnimationDemo();
-  mountExperienceDemo();
-
-  // Make the SUBHEAD ARROW act as the theme toggle (click/keyboard)
+  // ========== Mount demos on DOM ready ==========
+  document.addEventListener('DOMContentLoaded', () => {
+    // Make the SUBHEAD ARROW act as the theme toggle (click/keyboard)
   const arrow = document.querySelector('#subhead .subhead-arrow');
   if (arrow) {
     arrow.setAttribute('role', 'button');
