@@ -442,6 +442,68 @@ body[data-viewport="mobile"] #apps {
   display: none;
 }
 
+/* ======== MASTER SECTION (Desktop) ======== */
+.master-section {
+  display: none;
+  --section-bg: var(--elev);
+  --section-border: 1px solid var(--border);
+  --section-radius: 24px;
+}
+
+.master-shell {
+  position: relative;
+  height: min(92vh, 900px);
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.master-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+  height: 100%;
+}
+
+.master-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(16px, 3vw, 28px);
+  border-radius: 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.master-label {
+  font-family: "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: var(--size-sm);
+}
+
+.master-placeholder {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  color: var(--fg-muted);
+  font-size: var(--size-sm);
+  text-align: center;
+}
+
+body[data-viewport="desktop"] .master-section,
+body[data-viewport="large-desktop"] .master-section {
+  display: block;
+}
+
+body[data-viewport="desktop"] .page > :not(.master-section),
+body[data-viewport="large-desktop"] .page > :not(.master-section) {
+  display: none !important;
+}
+
+html[data-debug="1"] .master-grid { outline:2px dashed rgba(var(--ol-purple),.9); }
+html[data-debug="1"] .master-column { outline:2px dashed rgba(var(--ol-green),.9); }
+
 /* ======== Mobile Collage ======== */
 body[data-viewport="mobile"] #collage {
   margin: clamp(10px, 2vw, 20px) 0;
