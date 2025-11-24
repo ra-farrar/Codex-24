@@ -107,6 +107,7 @@ p,h1,h2,h3,h4,h5,h6{margin:0}
   }
 
   .master-section {
+  .master-container {
     border: 1px solid var(--border);
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
@@ -124,6 +125,8 @@ p,h1,h2,h3,h4,h5,h6{margin:0}
   .master-scroll {
     height: 100%;
     flex: 1;
+  .master-scroll {
+    height: 100%;
     overflow-y: auto;
     padding: clamp(16px, 2.8vw, 28px);
   }
