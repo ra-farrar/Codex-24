@@ -496,6 +496,31 @@ body[data-viewport="large-desktop"] .master-section {
   display: block;
 }
 
+body[data-viewport="desktop"] .page,
+body[data-viewport="large-desktop"] .page {
+  min-height: 100vh;
+  padding: 16px var(--page-padding-inline);
+}
+
+body[data-viewport="desktop"] .master-section,
+body[data-viewport="large-desktop"] .master-section {
+  margin: 0;
+  height: calc(100vh - 32px);
+}
+
+body[data-viewport="desktop"] .master-section .master-shell,
+body[data-viewport="large-desktop"] .master-section .master-shell {
+  height: 100%;
+  max-height: none;
+}
+
+@supports (height: 100dvh) {
+  body[data-viewport="desktop"] .master-section,
+  body[data-viewport="large-desktop"] .master-section {
+    height: calc(100dvh - 32px);
+  }
+}
+
 body[data-viewport="desktop"] .page > :not(.master-section),
 body[data-viewport="large-desktop"] .page > :not(.master-section) {
   display: none !important;
