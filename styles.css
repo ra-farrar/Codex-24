@@ -205,6 +205,8 @@ html[data-debug="1"] .master-section { outline: 2px dashed rgba(var(--ol-blue), 
 html[data-debug="1"] .master-grid { outline: 2px dashed rgba(var(--ol-green), .9); outline-offset: 4px; }
 html[data-debug="1"] .master-column.master-resume { outline: 2px dashed rgba(var(--ol-purple), .9); outline-offset: 6px; }
 html[data-debug="1"] .master-column.master-content { outline: 2px dashed rgba(var(--ol-orange), .9); outline-offset: 6px; }
+html[data-debug="1"] .master-header .header-inner { outline: 2px dashed rgba(var(--ol-green), .9); outline-offset: 6px; }
+html[data-debug="1"] .master-header .header-measure { outline: 2px dashed rgba(var(--ol-purple), .9); outline-offset: 8px; }
 
 /* Shared sections */
 .section--box{border:var(--section-border,0)}
@@ -805,7 +807,7 @@ html[data-theme="dark"] #animation .animation-stage{
 }
 
 @media (min-width: 768px) {
-  .master-header .header-measure {
+  .master-header .header-inner {
     padding-inline: clamp(16px, 3vw, 28px);
   }
 }
