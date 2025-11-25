@@ -791,9 +791,16 @@ html[data-theme="dark"] #animation .animation-stage{
   margin: 0;
 }
 
+.master-header .header-title {
+  display: flex;
+  justify-content: center;
+}
+
 .master-header .header-text--stacked {
-  font-size: clamp(48px, 7vw, 120px);
+  font-size: clamp(48px, 5vw, 120px);
   letter-spacing: -0.04em;
+  max-width: min(100%, 420px);
+  margin-inline: auto;
 }
 
 .header-text--stacked {
