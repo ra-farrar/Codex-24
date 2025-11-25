@@ -201,6 +201,10 @@ html[data-debug="1"] #timeline .timeline-item { outline:2px dashed rgba(var(--ol
 html[data-debug="1"] #timeline .timeline-column--date { outline:2px dashed rgba(var(--ol-green),.75); }
 html[data-debug="1"] #timeline .timeline-column--axis { outline:2px dashed rgba(var(--ol-purple),.75); }
 html[data-debug="1"] #timeline .timeline-column--role { outline:2px dashed rgba(var(--ol-orange),.75); }
+html[data-debug="1"] .master-section { outline: 2px dashed rgba(var(--ol-blue), .9); }
+html[data-debug="1"] .master-grid { outline: 2px dashed rgba(var(--ol-green), .9); outline-offset: 4px; }
+html[data-debug="1"] .master-column.master-resume { outline: 2px dashed rgba(var(--ol-purple), .9); outline-offset: 6px; }
+html[data-debug="1"] .master-column.master-content { outline: 2px dashed rgba(var(--ol-orange), .9); outline-offset: 6px; }
 
 /* Shared sections */
 .section--box{border:var(--section-border,0)}
@@ -908,6 +912,61 @@ font-size='34' font-weight='700' fill='white'>◓</text></svg>") 24 24, auto;
 <svg xmlns='http://www.w3.org/2000/svg' width='48' height='48'>\
 <text x='50%' y='50%' dominant-baseline='central' text-anchor='middle' \
 font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
+  }
+}
+
+/* ======== MASTER LAYOUT (Tablet & Desktop) ======== */
+.master-shell {
+  display: none;
+}
+
+.master-section {
+  background: var(--elev);
+  border-radius: 18px;
+  border: 2px solid var(--border);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.16);
+  height: min(90vh, 780px);
+  width: min(1200px, calc(100vw - clamp(48px, 8vw, 140px)));
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.master-scroll {
+  height: 100%;
+  overflow-y: auto;
+  padding: clamp(16px, 3vw, 28px);
+}
+
+.master-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: clamp(16px, 3vw, 28px);
+  height: 100%;
+}
+
+.master-column {
+  background: transparent;
+  border-radius: 12px;
+}
+
+@media (min-width: 768px) {
+  body {
+    overflow: hidden;
+  }
+
+  .page {
+    display: none;
+  }
+
+  .master-shell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: clamp(16px, 5vw, 32px);
   }
 }
 
