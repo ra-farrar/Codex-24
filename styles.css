@@ -791,6 +791,11 @@ html[data-theme="dark"] #animation .animation-stage{
   margin: 0;
 }
 
+.master-header .header-text--stacked {
+  font-size: clamp(48px, 7vw, 120px);
+  letter-spacing: -0.04em;
+}
+
 .header-text--stacked {
   font-size: clamp(72px, 14vw, 160px);
   flex-direction: column;
@@ -980,7 +985,7 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
 
 .master-grid {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   gap: clamp(16px, 3vw, 28px);
   height: 100%;
 }
