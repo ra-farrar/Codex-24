@@ -775,6 +775,44 @@ html[data-theme="dark"] #animation .animation-stage{
 #header.section{outline:none!important}
 #header .header-fill{position:relative}
 
+.master-header {
+  --section-bg: transparent;
+  --section-border: 0;
+  padding: 0;
+  margin: 0 0 clamp(10px, 2vw, 20px);
+}
+
+.master-header .header-inner {
+  padding: 0;
+}
+
+.master-header .header-measure {
+  width: 100%;
+  margin: 0;
+}
+
+.header-text--stacked {
+  font-size: clamp(72px, 14vw, 160px);
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.05em;
+  width: 100%;
+}
+
+.header-text--stacked .header-text__word {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .header-text--stacked {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+}
+
 /* ======== CUSTOM TEXT SELECTION ======== */
 ::selection{color:#FD3938;background:#000}
 ::-moz-selection{color:#FD3938;background:#000}
