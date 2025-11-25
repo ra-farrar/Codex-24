@@ -789,6 +789,7 @@ html[data-theme="dark"] #animation .animation-stage{
 .master-header .header-measure {
   width: 100%;
   margin: 0;
+  box-sizing: border-box;
 }
 
 .master-header .header-title {
@@ -801,6 +802,12 @@ html[data-theme="dark"] #animation .animation-stage{
   letter-spacing: -0.04em;
   max-width: min(100%, 420px);
   margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .master-header .header-measure {
+    padding-inline: clamp(16px, 3vw, 28px);
+  }
 }
 
 .header-text--stacked {
