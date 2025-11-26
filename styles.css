@@ -984,11 +984,13 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
   font-family: "Angkor", var(--font-sans);
   letter-spacing: -0.06em;
   text-align: center;
-  line-height: 0.9;
-  font-size: clamp(64px, 24cqi, 184px);
-  gap: clamp(0.08em, 1vh, 0.18em);
+  line-height: 0.86;
+  font-size: clamp(64px, 18cqi, 160px);
+  gap: clamp(0.06em, 0.8vh, 0.14em);
   text-transform: uppercase;
   overflow: hidden;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .master-resume__word {

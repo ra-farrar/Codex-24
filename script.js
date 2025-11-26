@@ -81,14 +81,16 @@ refreshViewportMode();
   const HEADER_SELECTOR = '.master-resume__header';
   const MIN_SIZE = 32;
   const MAX_SIZE = 240;
+  const SAFE_INSET = 12;
   let rafId = 0;
   let resizeObserver;
 
   function fits(container, header, size) {
     header.style.fontSize = `${size}px`;
     const { scrollWidth, scrollHeight } = header;
-    const { clientWidth, clientHeight } = container;
-    return scrollWidth <= clientWidth && scrollHeight <= clientHeight;
+    const availableWidth = Math.max(0, container.clientWidth - SAFE_INSET);
+    const availableHeight = Math.max(0, container.clientHeight - SAFE_INSET);
+    return scrollWidth <= availableWidth && scrollHeight <= availableHeight;
   }
 
   function calculateSize(container, header) {
