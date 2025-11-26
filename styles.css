@@ -981,6 +981,8 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
   gap: clamp(6px, 1vw, 10px);
   align-self: flex-start;
   height: auto;
