@@ -999,6 +999,14 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
     overflow: hidden;
   }
 
+  .master-resume__word:first-child {
+    font-size: clamp(78px, 28cqi, 210px);
+  }
+
+  .master-resume__word:nth-child(2) {
+    font-size: clamp(64px, 22cqi, 184px);
+  }
+
   .page {
     display: none;
   }
