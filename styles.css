@@ -994,6 +994,7 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
 .master-resume__word {
   display: block;
   width: 100%;
+  font-size: 1em;
 }
 
 @media (min-width: 768px) {
@@ -1001,13 +1002,9 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
     overflow: hidden;
   }
 
-  .master-resume__word:first-child {
-    font-size: clamp(78px, 28cqi, 210px);
-  }
+  .master-resume__word:first-child { font-size: 1.12em; }
 
-  .master-resume__word:nth-child(2) {
-    font-size: clamp(64px, 22cqi, 184px);
-  }
+  .master-resume__word:nth-child(2) { font-size: 0.96em; }
 
   .page {
     display: none;
