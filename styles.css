@@ -969,6 +969,7 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
   inline-size: 100%;
   min-height: 100%;
   overflow: hidden;
+  container-type: inline-size;
 }
 
 .master-resume__header {
@@ -982,7 +983,7 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
   letter-spacing: -0.06em;
   text-align: center;
   line-height: 0.9;
-  font-size: clamp(64px, min(22vw, 22vh), 184px);
+  font-size: clamp(64px, 24cqi, 184px);
   gap: clamp(0.08em, 1vh, 0.18em);
   text-transform: uppercase;
   overflow: hidden;
