@@ -205,6 +205,8 @@ html[data-debug="1"] .master-section { outline: 2px dashed rgba(var(--ol-blue), 
 html[data-debug="1"] .master-grid { outline: 2px dashed rgba(var(--ol-green), .9); outline-offset: 4px; }
 html[data-debug="1"] .master-column.master-resume { outline: 2px dashed rgba(var(--ol-purple), .9); outline-offset: 6px; }
 html[data-debug="1"] .master-column.master-content { outline: 2px dashed rgba(var(--ol-orange), .9); outline-offset: 6px; }
+html[data-debug="1"] .master-resume__container { outline: 2px dashed rgba(var(--ol-green), .85); outline-offset: 8px; }
+html[data-debug="1"] .master-resume__header { outline: 2px dashed rgba(var(--ol-purple), .85); outline-offset: 10px; }
 
 /* Shared sections */
 .section--box{border:var(--section-border,0)}
