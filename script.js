@@ -75,6 +75,80 @@ if (document.readyState === 'loading') {
 
 refreshViewportMode();
 
+// ========== Desktop masthead autosize ==========
+(function () {
+  const CONTAINER_SELECTOR = '.master-resume__container';
+  const HEADER_SELECTOR = '.master-resume__header';
+  const MIN_SIZE = 32;
+  const MAX_SIZE = 240;
+  const SAFE_INSET = 12;
+  let rafId = 0;
+  let resizeObserver;
+
+  function fits(container, header, size) {
+    header.style.fontSize = `${size}px`;
+    const { scrollWidth, scrollHeight } = header;
+    const availableWidth = Math.max(0, container.clientWidth - SAFE_INSET);
+    const availableHeight = Math.max(0, container.clientHeight - SAFE_INSET);
+    return scrollWidth <= availableWidth && scrollHeight <= availableHeight;
+  }
+
+  function calculateSize(container, header) {
+    const { clientWidth: width, clientHeight: height } = container;
+    if (!width || !height) return;
+
+    let low = MIN_SIZE;
+    let high = MAX_SIZE;
+    let best = low;
+
+    while (low <= high) {
+      const mid = (low + high) / 2;
+      if (fits(container, header, mid)) {
+        best = mid;
+        low = mid + 0.5;
+      } else {
+        high = mid - 0.5;
+      }
+    }
+
+    header.style.fontSize = `${best}px`;
+  }
+
+  function scheduleResize(container, header) {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(() => {
+      rafId = 0;
+      calculateSize(container, header);
+    });
+  }
+
+  function initMastheadAutosize() {
+    const container = document.querySelector(CONTAINER_SELECTOR);
+    const header = container?.querySelector(HEADER_SELECTOR);
+    if (!container || !header) return;
+
+    const run = () => scheduleResize(container, header);
+
+    run();
+    window.addEventListener('resize', run, { passive: true });
+    document.addEventListener('viewportchange', run, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(run).catch(() => {});
+    }
+
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(run);
+      resizeObserver.observe(container);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMastheadAutosize, { once: true });
+  } else {
+    initMastheadAutosize();
+  }
+})();
+
 // ========== Timeline date width sync ==========
 (function () {
   const TIMELINE_SELECTOR = '.section--timeline';
