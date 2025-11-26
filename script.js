@@ -79,8 +79,8 @@ refreshViewportMode();
 (function () {
   const CONTAINER_SELECTOR = '.master-resume__container';
   const HEADER_SELECTOR = '.master-resume__header';
-  const MIN_SIZE = 64;
-  const MAX_SIZE = 220;
+  const MIN_SIZE = 32;
+  const MAX_SIZE = 240;
   let rafId = 0;
   let resizeObserver;
 
