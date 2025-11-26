@@ -1008,19 +1008,15 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
 
 @media (min-width: 768px) {
   body {
-    overflow: hidden;
+    overflow: auto;
   }
 
   .page {
-    display: none;
+    display: block;
   }
 
   .master-shell {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: clamp(16px, 5vw, 32px);
+    display: none;
   }
 }
 
