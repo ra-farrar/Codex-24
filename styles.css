@@ -994,6 +994,7 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
   border: 2px solid var(--border);
   background: linear-gradient(180deg, color-mix(in srgb, var(--elev) 85%, transparent) 0%, var(--elev) 100%);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  letter-spacing: -0.06em;
 }
 
 .resume-card__line {
