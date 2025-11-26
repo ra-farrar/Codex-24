@@ -75,6 +75,83 @@ if (document.readyState === 'loading') {
 
 refreshViewportMode();
 
+// ========== Resume card text fitting ==========
+(function () {
+  const CARD_SELECTOR = '.resume-card';
+  const LINE_SELECTOR = '.resume-card__line';
+
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+
+  function toNumber(value, fallback = 0) {
+    const parsed = parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  function measureLineWidth(text, baseSize, style) {
+    if (!context) return 0;
+    const fontWeight = style.fontWeight || '400';
+    const fontFamily = style.fontFamily || 'sans-serif';
+    context.font = `${fontWeight} ${baseSize}px ${fontFamily}`;
+
+    const letterSpacing = toNumber(style.letterSpacing);
+    const spacingWidth = letterSpacing * Math.max(0, text.length - 1);
+    return context.measureText(text).width + spacingWidth;
+  }
+
+  function fitLine(line, availableWidth) {
+    const style = window.getComputedStyle(line);
+    const baseSize = toNumber(style.fontSize);
+    const minSize = toNumber(style.getPropertyValue('--resume-line-min-size'), baseSize);
+    const maxSize = toNumber(style.getPropertyValue('--resume-line-max-size'), baseSize);
+    const text = (line.textContent || '').trim();
+
+    if (!baseSize || !text) return;
+
+    const textWidth = measureLineWidth(text, baseSize, style);
+    if (!textWidth || !availableWidth) return;
+
+    const targetSize = Math.max(minSize, Math.min(maxSize, (availableWidth / textWidth) * baseSize));
+    line.style.setProperty('--resume-line-size', `${targetSize}px`);
+  }
+
+  function fitCard(card) {
+    const lines = card.querySelectorAll(LINE_SELECTOR);
+    if (!lines.length) return;
+
+    const styles = window.getComputedStyle(card);
+    const paddingLeft = toNumber(styles.paddingLeft);
+    const paddingRight = toNumber(styles.paddingRight);
+    const availableWidth = card.clientWidth - paddingLeft - paddingRight;
+    if (availableWidth <= 0) return;
+
+    lines.forEach((line) => fitLine(line, availableWidth));
+  }
+
+  function initResumeCardFit() {
+    const card = document.querySelector(CARD_SELECTOR);
+    if (!card) return;
+
+    const update = () => fitCard(card);
+    update();
+
+    const observer = new ResizeObserver(update);
+    observer.observe(card);
+
+    window.addEventListener('resize', update, { passive: true });
+    document.addEventListener('viewportchange', update, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(update).catch(() => {});
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initResumeCardFit, { once: true });
+  } else {
+    initResumeCardFit();
+  }
+})();
+
 // ========== Timeline date width sync ==========
 (function () {
   const TIMELINE_SELECTOR = '.section--timeline';
