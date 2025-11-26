@@ -952,6 +952,32 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
   border-radius: 12px;
 }
 
+.resume-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(14px, 2vw, 22px);
+  height: 100%;
+  padding: clamp(18px, 3vw, 28px);
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--elev) 85%, transparent) 0%, var(--elev) 100%);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.resume-card__line {
+  font-family: "Angkor", "Inter Tight", system-ui, sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  letter-spacing: 0.08em;
+  color: var(--fg);
+  line-height: 1.05;
+}
+
+.resume-card__line--top {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: clamp(8px, 1vw, 12px);
+}
+
 @media (min-width: 768px) {
   body {
     overflow: hidden;
