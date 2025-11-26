@@ -997,7 +997,13 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
 
 .resume-card__line {
   font-family: "Angkor", "Inter Tight", system-ui, sans-serif;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  --resume-line-min-size: 28px;
+  --resume-line-max-size: 92px;
+  --resume-line-size: clamp(var(--resume-line-min-size), 4vw, 42px);
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  font-size: var(--resume-line-size);
   letter-spacing: 0.08em;
   color: var(--fg);
   line-height: 1.05;
