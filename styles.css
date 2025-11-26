@@ -967,7 +967,7 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
 
 .master-grid {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   gap: clamp(16px, 3vw, 28px);
   height: 100%;
 }
@@ -975,6 +975,7 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
 .master-column {
   background: transparent;
   border-radius: 12px;
+  min-width: 0;
 }
 
 .resume-card {
