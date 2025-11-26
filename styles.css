@@ -1006,7 +1006,7 @@ font-size='34' font-weight='700' fill='black'>◓</text></svg>") 24 24, auto;
   width: 100%;
   white-space: nowrap;
   font-size: var(--resume-line-size);
-  letter-spacing: 0.08em;
+  letter-spacing: -0.06em;
   color: var(--fg);
   line-height: 1.05;
 }
